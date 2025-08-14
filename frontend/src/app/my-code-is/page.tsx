@@ -45,7 +45,7 @@ export default function MyCodeIsPage() {
 
     if (isCodeCorrect) {
       console.log("Code is correct! Navigating to next page.");
-      router.push('/profile-setup'); // Assuming the next page is /profile-setup
+      router.push('/my-name-is'); // Assuming the next page is /my-name-is
     } else {
       console.log("Code is incorrect. Clearing inputs.");
       setIsIncorrect(true);
@@ -57,12 +57,12 @@ export default function MyCodeIsPage() {
   };
 
   return (
-    <div className="relative flex h-screen w-screen flex-col items-center bg-white px-8 pt-12">
+    <div className="relative flex h-screen w-screen flex-col justify-center items-center bg-white px-8">
       <div className="absolute left-4 top-4 text-2xl text-gray-400">
         ←
       </div>
 
-      <div className="mt-20 flex w-full flex-col items-center">
+      <div className="flex w-full flex-col items-center">
         <h1 className="text-4xl font-bold text-gray-800">My code is</h1>
         
         <div className="mt-8 flex justify-center gap-2">
