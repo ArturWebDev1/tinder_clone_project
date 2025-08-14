@@ -1,0 +1,45 @@
+### POST requests
+POST http://localhost:8080/api/profiles
+Content-Type: application/json
+
+{
+  "name": "Alice",
+  "age": 18,
+  "bio": "Loves hiking"
+}
+
+### POST upload photo
+POST http://localhost:8080/api/photos/upload
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="caption.jpg"
+Content-Type: image/jpeg
+
+< ./src/main/resources/photos/caption.jpg
+--WebAppBoundary--
+
+### GET requests
+GET http://localhost:8080/api/profiles/9
+
+
+### UPDATE requests
+PUT http://localhost:8080/api/profiles/8
+Content-Type: application/json
+
+{
+  "name": "dfsg",
+  "age": 19,
+  "bio": "Loafdafves hiking"
+}
+
+
+### DELETE requests
+DELETE http://localhost:8080/api/profiles/8
+
+
+
+
+
+
+
