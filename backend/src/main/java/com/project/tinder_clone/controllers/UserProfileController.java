@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/profile")
 @RequiredArgsConstructor
@@ -14,9 +16,9 @@ public class UserProfileController {
     private final UserProfileService profileService;
 
     @PostMapping("/name")
-    public Long create(@RequestBody @Valid UserProfile profile) {
+    public Map<String, Long> create(@RequestBody @Valid UserProfile profile) {
         UserProfile saved = profileService.createProfile(profile);
-        return saved.getId();
+        return Map.of("id", saved.getId());
     }
 
     @DeleteMapping(path = "/{id}")
