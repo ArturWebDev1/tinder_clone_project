@@ -14,13 +14,10 @@ public class UserProfileController {
     private final UserProfileService profileService;
 
     @PostMapping("/name")
-    public ResponseEntity<UserProfile> create(@RequestBody @Valid UserProfile profile) {
+    public Long create(@RequestBody @Valid UserProfile profile) {
         UserProfile saved = profileService.createProfile(profile);
-        return ResponseEntity.ok(saved);
+        return saved.getId();
     }
-
-
-
 
     @DeleteMapping(path = "/{id}")
     public void deleteProfileById(@PathVariable("id") Long id) {
