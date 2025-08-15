@@ -32,6 +32,7 @@ Content-Type: application/json
 }
 
 
+
 ### DELETE requests
 DELETE http://localhost:8080/api/profile/8
 
