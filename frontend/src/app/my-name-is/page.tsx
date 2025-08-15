@@ -3,6 +3,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 // A simple component for our progress bar
 const ProgressBar = ({ step, totalSteps }: { step: number; totalSteps: number }) => {
@@ -19,7 +20,36 @@ const ProgressBar = ({ step, totalSteps }: { step: number; totalSteps: number })
 };
 
 export default function MyNameIsPage() {
-  const [name, setName] = useState('');
+  const router = useRouter();
+  const [userName, setUserName] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const isButtonDisabled = userName.trim().length === 0 || loading;
+
+  const handlePostName = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/profile/name', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: userName }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save name');
+      }
+
+      console.log('Name saved successfully!');
+      router.push('/my-birthday-is');
+    } catch (error) {
+      console.error('Error:', error);
+      // You could display an error message to the user here
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="relative flex h-screen w-screen flex-col items-center justify-center bg-white px-8">
@@ -31,7 +61,7 @@ export default function MyNameIsPage() {
       <div className="flex w-full flex-col items-center m-1">
         {/* Progress Bar */}
         <div className="mt-12 mb-8">
-          <ProgressBar step={1} totalSteps={5} /> {/* Assuming 5 steps for profile creation */}
+          <ProgressBar step={1} totalSteps={5} />
         </div>
         
         <h1 className="text-4xl font-bold text-gray-800">My first name is</h1>
@@ -39,28 +69,25 @@ export default function MyNameIsPage() {
         <div className="mt-8 flex w-80 flex-col items-center">
           <input
             type="text"
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full border-b border-gray-300 bg-white text-lg font-light text-gray-800 placeholder-gray-400 focus:outline-none"
+            placeholder="First name"
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
+            className="w-full border-b border-gray-300 bg-white p-2 text-center font-light text-gray-800 placeholder-gray-400 focus:outline-none"
           />
-          
           <p className="mt-4 text-xs text-gray-400 text-center">
-            This is how it will appear in Tinder and you will not be able to change it.
+            This is how it will appear in Tinder.
           </p>
         </div>
       </div>
       
-      {/* Continue Button */}
       <div className="mt-10 w-64">
-        <Link href="/my-birthday-is">
-          <button
-            className="h-12 w-full rounded-full bg-gradient-to-r from-[#FD297B] to-[#FF5864] text-sm font-bold text-white shadow-md"
-            disabled={!name} // Disable button if name is empty
-          >
-            CONTINUE
-          </button>
-        </Link>
+        <button
+          onClick={handlePostName}
+          className="h-12 w-full rounded-full bg-gradient-to-r from-[#FD297B] to-[#FF5864] text-sm font-bold text-white shadow-md disabled:opacity-50"
+          disabled={isButtonDisabled}
+        >
+          CONTINUE
+        </button>
       </div>
     </div>
   );
