@@ -1,6 +1,9 @@
 package com.project.tinder_clone.controllers;
 
+import com.project.tinder_clone.domain.dto.responses.IdResponse;
+import com.project.tinder_clone.domain.dto.ProfileDto;
 import com.project.tinder_clone.domain.entries.UserProfile;
+import com.project.tinder_clone.mapper.ProfileMapper;
 import com.project.tinder_clone.services.UserProfileService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,11 +17,12 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserProfileController {
     private final UserProfileService profileService;
+    private final ProfileMapper profileMapper;
 
     @PostMapping("/name")
-    public Map<String, Long> create(@RequestBody @Valid UserProfile profile) {
-        UserProfile saved = profileService.createProfile(profile);
-        return Map.of("id", saved.getId());
+    public IdResponse create(@RequestBody @Valid ProfileDto profile) {
+        UserProfile saved = profileService.createProfile(profileMapper.toEntity(profile));
+        return new IdResponse(saved.getId());
     }
 
     @DeleteMapping(path = "/{id}")
