@@ -15,7 +15,7 @@ public class WebConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**") // Apply CORS to all API endpoints
                         .allowedOrigins("http://localhost:3000") // Allow requests from your Next.js app
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allow these HTTP methods
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS") // Allow these HTTP methods
                         .allowedHeaders("*") // Allow all headers
                         .allowCredentials(true); // Allow cookies and authentication headers
             }
