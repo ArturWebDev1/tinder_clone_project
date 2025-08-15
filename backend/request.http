@@ -3,7 +3,7 @@ POST http://localhost:8080/api/profile/name
 Content-Type: application/json
 
 {
-  "name": "Alice"
+  "name": "valera"
 }
 
 ### POST upload photo
