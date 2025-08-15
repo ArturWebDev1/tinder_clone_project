@@ -5,10 +5,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-// A simple component for our progress bar
 const ProgressBar = ({ step, totalSteps }: { step: number; totalSteps: number }) => {
   const progressPercentage = (step / totalSteps) * 100;
-
   return (
     <div className="w-80 h-1 bg-gray-200 rounded-full overflow-hidden">
       <div
@@ -41,7 +39,15 @@ export default function MyNameIsPage() {
         throw new Error('Failed to save name');
       }
 
-      console.log('Name saved successfully!');
+      const data = await response.json();
+      const userId = data.id; // Assuming the server returns { "id": "some-uuid" }
+      console.log('Profile created successfully with ID:', userId);
+
+      // Store the ID in localStorage to be used on other pages
+      // In a real application, you might use a more secure method like cookies
+      // or a state management solution (e.g., React Context).
+      localStorage.setItem('tinderCloneUserId', userId);
+
       router.push('/my-birthday-is');
     } catch (error) {
       console.error('Error:', error);
@@ -57,15 +63,15 @@ export default function MyNameIsPage() {
       <div className="absolute left-4 top-4 text-2xl text-gray-400">
         ←
       </div>
-
+      
       <div className="flex w-full flex-col items-center m-1">
         {/* Progress Bar */}
         <div className="mt-12 mb-8">
           <ProgressBar step={1} totalSteps={5} />
         </div>
         
-        <h1 className="text-4xl font-bold text-gray-800">My first name is</h1>
-
+        <h1 className="text-4xl font-bold text-gray-800">My name is</h1>
+        
         <div className="mt-8 flex w-80 flex-col items-center">
           <input
             type="text"
