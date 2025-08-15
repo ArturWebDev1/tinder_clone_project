@@ -34,9 +34,8 @@ public class UserProfile implements Serializable {
     @Column(nullable=false)
     private String name;
 
-    @Column(nullable=false)
-    @Min(18)
-    private int age;
+    @Column()
+    private Integer age;
 
     @Size(max=500)
     private String bio;

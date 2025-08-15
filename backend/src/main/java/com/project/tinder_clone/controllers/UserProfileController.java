@@ -8,16 +8,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/profiles")
+@RequestMapping("/api/profile")
 @RequiredArgsConstructor
 public class UserProfileController {
     private final UserProfileService profileService;
 
-    @PostMapping
+    @PostMapping("/name")
     public ResponseEntity<UserProfile> create(@RequestBody @Valid UserProfile profile) {
         UserProfile saved = profileService.createProfile(profile);
         return ResponseEntity.ok(saved);
     }
+
+
 
 
     @DeleteMapping(path = "/{id}")

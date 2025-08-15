@@ -1,11 +1,9 @@
-### POST requests
-POST http://localhost:8080/api/profiles
+### POST name request
+POST http://localhost:8080/api/profile/name
 Content-Type: application/json
 
 {
-  "name": "Alice",
-  "age": 18,
-  "bio": "Loves hiking"
+  "name": "Alice"
 }
 
 ### POST upload photo
@@ -20,11 +18,11 @@ Content-Type: image/jpeg
 --WebAppBoundary--
 
 ### GET requests
-GET http://localhost:8080/api/profiles/9
+GET http://localhost:8080/api/profile/9
 
 
 ### UPDATE requests
-PUT http://localhost:8080/api/profiles/8
+PUT http://localhost:8080/api/profile/8
 Content-Type: application/json
 
 {
@@ -35,7 +33,7 @@ Content-Type: application/json
 
 
 ### DELETE requests
-DELETE http://localhost:8080/api/profiles/8
+DELETE http://localhost:8080/api/profile/8
 
 
 
