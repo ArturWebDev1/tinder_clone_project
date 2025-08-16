@@ -6,6 +6,22 @@ Content-Type: application/json
   "name": "valera"
 }
 
+### PATCH birthdate update
+PATCH http://localhost:8080/api/profile/2/birthdate
+Content-Type: application/json
+
+{
+  "birthdate": "1995-12-25"
+}
+
+### PATCH gender update
+PATCH http://localhost:8080/api/profile/2/gender
+Content-Type: application/json
+
+{
+  "gender": "MAN"
+}
+
 ### POST upload photo
 POST http://localhost:8080/api/photos/upload
 Content-Type: multipart/form-data; boundary=WebAppBoundary

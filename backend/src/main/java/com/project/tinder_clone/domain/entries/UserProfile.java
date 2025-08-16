@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,6 +23,11 @@ import java.util.UUID;
 @Builder
 public class UserProfile implements Serializable {
 
+    public enum Gender {
+        MAN,
+        WOMAN
+    }
+
     // It is a best practice to add a serialVersionUID for versioning.
     private static final long serialVersionUID = 1L;
 
@@ -36,6 +42,13 @@ public class UserProfile implements Serializable {
 
     @Column()
     private Integer age;
+
+    @Column()
+    private LocalDate birthdate;
+
+    @Column()
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     @Size(max=500)
     private String bio;
