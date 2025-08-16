@@ -1,7 +1,7 @@
 // app/my-birthday-is/page.tsx
 "use client";
 
-import React, { useState, useRef, ChangeEvent } from 'react';
+import React, { useState, useRef, ChangeEvent, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -24,13 +24,14 @@ export default function MyBirthdayIsPage() {
     month: ['', ''],
     day: ['', ''],
   });
+  const [loading, setLoading] = useState(false);
 
   // Create an array of refs for all 8 input fields
   const inputRefs = useRef<HTMLInputElement[]>([]);
 
   const allDigits = [...date.year, ...date.month, ...date.day];
   const isFormValid = allDigits.every(digit => digit !== '') && allDigits.length === 8;
-  const isButtonDisabled = !isFormValid;
+  const isButtonDisabled = !isFormValid || loading;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>, part: 'year' | 'month' | 'day', index: number) => {
     const value = e.target.value;
@@ -41,21 +42,64 @@ export default function MyBirthdayIsPage() {
 
       // This is the new logic to move the focus
       if (value !== '') {
-        const globalIndex = [...date.year, ...date.month, ...date.day].indexOf(date[part][index]) + 1;
-        if (inputRefs.current[globalIndex]) {
-            inputRefs.current[globalIndex].focus();
+        let globalIndex = index;
+        if (part === 'month') {
+            globalIndex += 4;
+        } else if (part === 'day') {
+            globalIndex += 6;
+        }
+        
+        const nextIndex = globalIndex + 1;
+        if (inputRefs.current[nextIndex] && inputRefs.current[nextIndex].value === '') {
+          inputRefs.current[nextIndex].focus();
         }
       }
     }
   };
-  
-  const handleSubmit = () => {
-    if (isFormValid) {
-      const fullDate = `${date.year.join('')}-${date.month.join('')}-${date.day.join('')}`;
-      console.log('Submitting birthday:', fullDate);
-      router.push('/my-gender-is');
+
+  const handlePatchBirthday = async () => {
+    setLoading(true);
+    const userId = localStorage.getItem('tinderCloneUserId');
+    
+    if (!userId) {
+      console.error('Error: User ID not found in local storage.');
+      setLoading(false);
+      return;
+    }
+
+    const fullDate = `${date.year.join('')}-${date.month.join('')}-${date.day.join('')}`;
+
+    try {
+      const response = await fetch(`http://localhost:8080/api/profile/${userId}/birthday`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ birthdate: fullDate }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save birthday');
+      }
+
+      console.log('Birthday saved successfully!');
+      router.push('/gender');
+    } catch (error) {
+      console.error('Error:', error);
+      // You could display an error message to the user here
+    } finally {
+      setLoading(false);
     }
   };
+  
+  // Set up the refs for input fields after component mounts
+  useEffect(() => {
+    inputRefs.current = [
+      ...Array.from(document.querySelectorAll<HTMLInputElement>('input[placeholder="Y"]')),
+      ...Array.from(document.querySelectorAll<HTMLInputElement>('input[placeholder="M"]')),
+      ...Array.from(document.querySelectorAll<HTMLInputElement>('input[placeholder="D"]')),
+    ];
+  }, []);
 
   return (
     <div className="relative flex h-screen w-screen flex-col items-center justify-center bg-white px-8">
@@ -120,7 +164,7 @@ export default function MyBirthdayIsPage() {
       
       <div className="mt-10 w-64">
         <button
-          onClick={handleSubmit}
+          onClick={handlePatchBirthday}
           className="h-12 w-full rounded-full bg-gradient-to-r from-[#FD297B] to-[#FF5864] text-sm font-bold text-white shadow-md disabled:opacity-50"
           disabled={isButtonDisabled}
         >
