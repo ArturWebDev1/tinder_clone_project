@@ -70,7 +70,7 @@ export default function MyBirthdayIsPage() {
     const fullDate = `${date.year.join('')}-${date.month.join('')}-${date.day.join('')}`;
 
     try {
-      const response = await fetch(`http://localhost:8080/api/profile/${userId}/birthday`, {
+      const response = await fetch(`http://localhost:8080/api/profile/${userId}/birthdate`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ export default function MyBirthdayIsPage() {
       }
 
       console.log('Birthday saved successfully!');
-      router.push('/gender');
+      router.push('/my-gender-is');
     } catch (error) {
       console.error('Error:', error);
       // You could display an error message to the user here
