@@ -1,5 +1,7 @@
 package com.project.tinder_clone.controllers;
 
+import com.project.tinder_clone.domain.dto.responses.BirthdayUpdateRequest;
+import com.project.tinder_clone.domain.dto.responses.GenderUpdateRequest;
 import com.project.tinder_clone.domain.dto.responses.IdResponse;
 import com.project.tinder_clone.domain.dto.ProfileDto;
 import com.project.tinder_clone.domain.entries.UserProfile;
@@ -43,5 +45,23 @@ public class UserProfileController {
         UserProfile updatedProfile = profileService.updateProfileById(id, profile);
         return ResponseEntity.ok(updatedProfile);
     }
+
+    @PatchMapping("/{id}/birthdate")
+    public void updateBirthdate(
+            @PathVariable Long id,
+            @RequestBody @Valid BirthdayUpdateRequest body) {
+
+        profileService.updateBirthdate(id, body.getBirthdate());
+    }
+
+    @PatchMapping("/{id}/gender")
+    public void updateGender(
+            @PathVariable Long id,
+            @RequestBody @Valid GenderUpdateRequest request) {
+
+        profileService.updateGender(id, request.getGender());
+    }
+
+
 
 }

@@ -3,6 +3,7 @@ package com.project.tinder_clone.services.impl;
 import com.project.tinder_clone.domain.entries.UserProfile;
 import com.project.tinder_clone.repositories.UserProfileRepository;
 import com.project.tinder_clone.services.UserProfileService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -11,6 +12,9 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.time.LocalDate;
+import java.time.Period;
 
 
 @Service
@@ -87,5 +91,33 @@ public class UserProfileServiceImpl implements UserProfileService {
         existingProfile.setBio(profile.getBio());
 
         return userRepo.save(existingProfile);
+    }
+
+
+    @Transactional
+    @Override
+    public UserProfile updateBirthdate(Long id, LocalDate birthdate) {
+        UserProfile p = userRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("UserProfile not found: " + id));
+
+        // бизнес-правило 18+ (если нужно)
+        int years = Period.between(birthdate, LocalDate.now()).getYears();
+        if (years < 18) {
+            throw new IllegalArgumentException("User must be at least 18 years old");
+        }
+
+        p.setBirthdate(birthdate);
+        p.setAge(years); // держим поле age в актуальном состоянии
+        return p; // благодаря @Transactional, Hibernate сам сделает UPDATE
+    }
+
+
+    @Transactional
+    @Override
+    public UserProfile updateGender(Long id, UserProfile.Gender gender) {
+        UserProfile profile = userRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Profile not found: " + id));
+        profile.setGender(gender);
+        return profile;
     }
 }
