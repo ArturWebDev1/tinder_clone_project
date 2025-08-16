@@ -72,6 +72,6 @@ public class UserProfile implements Serializable {
     // A one-to-many relationship with the Photo entity.
     // 'mappedBy = "user"' indicates that the 'Photo' entity owns the relationship
     // via its 'user' field. This tells JPA not to create a new foreign key column here.
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Photo> photos;
 }
