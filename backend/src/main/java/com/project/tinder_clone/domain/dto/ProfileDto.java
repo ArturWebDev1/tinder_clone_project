@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class ProfileDto {
     private Long id;
+    private String phoneNumber;
     private String name;
     private Integer age;
     private LocalDate birthdate;

@@ -26,8 +26,16 @@ export default function MyNameIsPage() {
 
   const handlePostName = async () => {
     setLoading(true);
+    const userId = localStorage.getItem('userId');
+    
+    if (!userId) {
+      console.error('Error: User ID not found in local storage.');
+      setLoading(false);
+      return;
+    }
+
     try {
-      const response = await fetch(`http://localhost:8080/api/profile/${localStorage.getItem("userId")}/name`, {
+      const response = await fetch(`http://localhost:8080/api/profile/${userId}/name`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -39,14 +47,8 @@ export default function MyNameIsPage() {
         throw new Error('Failed to save name');
       }
 
-      const data = await response.json();
-      const userId = data.id; // Assuming the server returns { "id": "some-uuid" }
-      console.log('Profile created successfully with ID:', userId);
+      console.log('Name saved successfully!');
 
-      // Store the ID in localStorage to be used on other pages
-      // In a real application, you might use a more secure method like cookies
-      // or a state management solution (e.g., React Context).
-      localStorage.setItem('userId', userId);
 
       router.push('/my-birthday-is');
     } catch (error) {

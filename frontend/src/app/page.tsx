@@ -41,13 +41,14 @@ const PhoneNumberModal = ({ onClose }: { onClose: () => void }) => {
       // Assuming the backend returns the profile ID or a redirect link
       const data = await response.json();
       const exist = data.exist;
-      const userId = data.id;
       const code = data.code;
-      localStorage.setItem('userId', userId);
       localStorage.setItem('code', code);
+      localStorage.setItem('phoneNumber', fullPhoneNumber);
 
       // The backend logic handles if the user is new or existing.
       if (exist) {
+        const userId = data.id;
+        localStorage.setItem('userId', userId);
         router.push('/dashboard');
       } else {
         router.push('/my-code-is');

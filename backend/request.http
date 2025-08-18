@@ -1,9 +1,10 @@
-### POST name request
-POST http://localhost:8080/api/profile/name
+
+### POST phone number request
+POST http://localhost:8080/api/profile/verify-code
 Content-Type: application/json
 
 {
-  "name": "valera"
+  "phoneNumber": "+37256349432"
 }
 
 ### PATCH birthdate update

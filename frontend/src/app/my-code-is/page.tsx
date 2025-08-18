@@ -32,11 +32,16 @@ export default function MyCodeIsPage() {
 
     // --- Backend Integration Action ---
     // Here you would make a POST request to your Spring Boot backend
-    // const response = await fetch('/api/profile/verify-code', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ code: submittedCode, phoneNumber: 'user_phone_number' }),
-    // });
+    const response = await fetch('http://localhost:8080/api/profile/verify-code', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ phoneNumber: localStorage.getItem('phoneNumber') }),
+    });
+
+
+    if (!response.ok) {
+        throw new Error('Failed to process phone number');
+      }
 
     
     // const result = await response.json();
@@ -46,6 +51,9 @@ export default function MyCodeIsPage() {
 
     if (isCodeCorrect) {
       console.log("Code is correct! Navigating to next page.");
+      const data = await response.json();
+      const userId = data.id;
+      localStorage.setItem('userId', userId);
       router.push('/my-name-is'); // Assuming the next page is /my-name-is
     } else {
       console.log("Code is incorrect. Clearing inputs.");
