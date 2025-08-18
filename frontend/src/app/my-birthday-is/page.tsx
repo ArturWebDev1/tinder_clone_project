@@ -59,7 +59,7 @@ export default function MyBirthdayIsPage() {
 
   const handlePatchBirthday = async () => {
     setLoading(true);
-    const userId = localStorage.getItem('tinderCloneUserId');
+    const userId = localStorage.getItem('userId');
     
     if (!userId) {
       console.error('Error: User ID not found in local storage.');

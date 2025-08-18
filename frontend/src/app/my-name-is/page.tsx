@@ -46,7 +46,7 @@ export default function MyNameIsPage() {
       // Store the ID in localStorage to be used on other pages
       // In a real application, you might use a more secure method like cookies
       // or a state management solution (e.g., React Context).
-      localStorage.setItem('tinderCloneUserId', userId);
+      localStorage.setItem('userId', userId);
 
       router.push('/my-birthday-is');
     } catch (error) {
