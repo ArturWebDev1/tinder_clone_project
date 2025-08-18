@@ -27,7 +27,7 @@ export default function MyNameIsPage() {
   const handlePostName = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:8080/api/profile/name', {
+      const response = await fetch(`http://localhost:8080/api/profile/${localStorage.getItem("userId")}/name`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
