@@ -32,16 +32,17 @@ export default function MyCodeIsPage() {
 
     // --- Backend Integration Action ---
     // Here you would make a POST request to your Spring Boot backend
-    // const response = await fetch('/api/auth/verify-code', {
+    // const response = await fetch('/api/profile/verify-code', {
     //   method: 'POST',
     //   headers: { 'Content-Type': 'application/json' },
     //   body: JSON.stringify({ code: submittedCode, phoneNumber: 'user_phone_number' }),
     // });
+
     
     // const result = await response.json();
 
     // Simulating a backend response
-    const isCodeCorrect = submittedCode === "123456"; // Use a mock correct code for now
+    const isCodeCorrect = submittedCode === localStorage.getItem('code'); // Use a mock correct code for now
 
     if (isCodeCorrect) {
       console.log("Code is correct! Navigating to next page.");
