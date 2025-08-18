@@ -28,7 +28,7 @@ export default function MyNameIsPage() {
     setLoading(true);
     try {
       const response = await fetch('http://localhost:8080/api/profile/name', {
-        method: 'POST',
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
