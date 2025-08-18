@@ -6,5 +6,5 @@ import lombok.Data;
 @Data
 public class PhoneCheckRequest {
     @NotBlank
-    private String phone;
+    private String phoneNumber;
 }

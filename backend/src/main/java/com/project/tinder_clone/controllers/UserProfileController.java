@@ -70,7 +70,7 @@ public class UserProfileController {
 
     @PostMapping("/phone")
     public PhoneCheckResponse getByPhone(@RequestBody @Valid PhoneCheckRequest req) {
-        return profileService.findByNumber(req.getPhone());
+        return profileService.findByNumber(req.getPhoneNumber());
     }
 
 }
