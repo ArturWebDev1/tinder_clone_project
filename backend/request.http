@@ -7,12 +7,29 @@ Content-Type: application/json
   "phoneNumber": "+37256349432"
 }
 
+
+### POST phone number request
+POST http://localhost:8080/api/profile/phone
+Content-Type: application/json
+
+{
+  "phoneNumber": "+37256349432"
+}
+
 ### PATCH birthdate update
 PATCH http://localhost:8080/api/profile/2/birthdate
 Content-Type: application/json
 
 {
   "birthdate": "1995-12-25"
+}
+
+### PATCH name update
+PATCH http://localhost:8080/api/profile/2/name
+Content-Type: application/json
+
+{
+  "name": "oleh"
 }
 
 ### PATCH gender update
@@ -53,7 +70,7 @@ Content-Type: application/json
 ### DELETE requests
 DELETE http://localhost:8080/api/profile/8
 
-
+###
 
 
 

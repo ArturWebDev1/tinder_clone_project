@@ -7,6 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class PhoneCheckResponse {
     private boolean exist;
-    private Long userId;
+    private Long id;
     private String code;
 }
