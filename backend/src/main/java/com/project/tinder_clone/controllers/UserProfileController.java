@@ -1,8 +1,7 @@
 package com.project.tinder_clone.controllers;
 
-import com.project.tinder_clone.domain.dto.responses.BirthdayUpdateRequest;
-import com.project.tinder_clone.domain.dto.responses.GenderUpdateRequest;
-import com.project.tinder_clone.domain.dto.responses.IdResponse;
+import com.project.tinder_clone.domain.dto.requests.PhoneCheckRequest;
+import com.project.tinder_clone.domain.dto.responses.*;
 import com.project.tinder_clone.domain.dto.ProfileDto;
 import com.project.tinder_clone.domain.entries.UserProfile;
 import com.project.tinder_clone.mapper.ProfileMapper;
@@ -12,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/profile")
@@ -21,7 +19,7 @@ public class UserProfileController {
     private final UserProfileService profileService;
     private final ProfileMapper profileMapper;
 
-    @PostMapping("/name")
+    @PostMapping("/verify-code")
     public IdResponse create(@RequestBody @Valid ProfileDto profile) {
         UserProfile saved = profileService.createProfile(profileMapper.toEntity(profile));
         return new IdResponse(saved.getId());
@@ -46,6 +44,14 @@ public class UserProfileController {
         return ResponseEntity.ok(updatedProfile);
     }
 
+    @PatchMapping("/{id}/name")
+    public void updateName(
+            @PathVariable Long id,
+            @RequestBody @Valid NameUpdateRequest name) {
+
+        profileService.updateName(id, name.getName());
+    }
+
     @PatchMapping("/{id}/birthdate")
     public void updateBirthdate(
             @PathVariable Long id,
@@ -62,6 +68,9 @@ public class UserProfileController {
         profileService.updateGender(id, request.getGender());
     }
 
-
+    @PostMapping("/phone")
+    public PhoneCheckResponse getByPhone(@RequestBody @Valid PhoneCheckRequest req) {
+        return profileService.findByNumber(req.getPhone());
+    }
 
 }

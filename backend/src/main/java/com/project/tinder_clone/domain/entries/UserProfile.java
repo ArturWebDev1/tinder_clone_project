@@ -36,8 +36,11 @@ public class UserProfile implements Serializable {
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
-    @NotBlank
-    @Column(nullable=false)
+
+    @Column(nullable = false, unique = true)
+    private String phoneNumber;
+
+    @Column()
     private String name;
 
     @Column()
