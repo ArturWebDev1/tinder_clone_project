@@ -1,8 +1,12 @@
 package com.project.tinder_clone.services.impl;
 
+import com.project.tinder_clone.domain.dto.requests.PhoneCheckRequest;
+import com.project.tinder_clone.domain.dto.responses.PhoneCheckResponse;
 import com.project.tinder_clone.domain.entries.UserProfile;
 import com.project.tinder_clone.repositories.UserProfileRepository;
 import com.project.tinder_clone.services.UserProfileService;
+import com.project.tinder_clone.utils.PhoneNormalizer;
+import jakarta.persistence.Column;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +18,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 @Service
 @RequiredArgsConstructor
 public class UserProfileServiceImpl implements UserProfileService {
     private final UserProfileRepository userRepo;
+    private final PhoneNormalizer normalizer;
 
     public static final String USER_CACHE = "userCache";
 
@@ -93,6 +100,15 @@ public class UserProfileServiceImpl implements UserProfileService {
         return userRepo.save(existingProfile);
     }
 
+    @Transactional
+    @Override
+    public UserProfile updateName(Long id, String name) {
+        UserProfile profile = userRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Profile not found: " + id));
+        profile.setName(name);
+        return profile;
+    }
+
 
     @Transactional
     @Override
@@ -120,4 +136,26 @@ public class UserProfileServiceImpl implements UserProfileService {
         profile.setGender(gender);
         return profile;
     }
+
+
+    @Transactional
+    @Override
+    public PhoneCheckResponse findByNumber(String phoneNumber) {
+        String e164 = normalizer.toE164(phoneNumber);
+
+        return userRepo.findByPhoneNumber(e164)
+                .map(u -> new PhoneCheckResponse(true, u.getId(), null))
+                .orElseGet(() -> {
+                    String code = generateCode();
+
+                    return new PhoneCheckResponse(false, null, code);
+                });
+    }
+
+    private String generateCode() {
+        // 6 случайных цифр, ведущие нули допустимы
+        int n = ThreadLocalRandom.current().nextInt(0, 1_000_000);
+        return String.format("%06d", n);
+    }
+
 }
