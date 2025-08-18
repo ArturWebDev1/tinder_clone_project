@@ -43,7 +43,7 @@ const PhoneNumberModal = ({ onClose }: { onClose: () => void }) => {
       const exist = data.exist;
       const userId = data.id;
       const code = data.code;
-      localStorage.setItem('tinderCloneUserId', userId);
+      localStorage.setItem('userId', userId);
       localStorage.setItem('code', code);
 
       // The backend logic handles if the user is new or existing.
