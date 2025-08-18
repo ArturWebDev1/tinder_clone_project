@@ -24,7 +24,7 @@ const PhoneNumberModal = ({ onClose }: { onClose: () => void }) => {
     try {
       const fullPhoneNumber = `+${selectedRegionCode}${phoneNumber}`;
       
-      const response = await fetch('http://localhost:8080/api/profile/phone', {
+      const response = await fetch('http://localhost:8080/api/auth/phone', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
