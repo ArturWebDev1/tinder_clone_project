@@ -6,11 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor @Builder
 public class Photo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
