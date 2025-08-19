@@ -153,7 +153,6 @@ public class UserProfileServiceImpl implements UserProfileService {
                 });
     }
 
-
     private String generateCode() {
         // 6 случайных цифр, ведущие нули допустимы
         int n = ThreadLocalRandom.current().nextInt(0, 1_000_000);
