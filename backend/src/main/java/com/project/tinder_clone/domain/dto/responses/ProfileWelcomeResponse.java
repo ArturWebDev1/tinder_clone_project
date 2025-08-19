@@ -12,5 +12,5 @@ import java.util.List;
 public class ProfileWelcomeResponse {
     private String name;
     private Integer age;
-    private List<String> photos;
+    private List<Photo> photos;
 }
