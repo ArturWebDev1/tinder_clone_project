@@ -2,6 +2,7 @@ package com.project.tinder_clone.services.impl;
 
 import com.project.tinder_clone.domain.dto.requests.PhoneCheckRequest;
 import com.project.tinder_clone.domain.dto.responses.PhoneCheckResponse;
+import com.project.tinder_clone.domain.dto.responses.ProfileWelcomeResponse;
 import com.project.tinder_clone.domain.entries.UserProfile;
 import com.project.tinder_clone.repositories.UserProfileRepository;
 import com.project.tinder_clone.services.UserProfileService;
@@ -151,6 +152,7 @@ public class UserProfileServiceImpl implements UserProfileService {
                     return new PhoneCheckResponse(false, null, code);
                 });
     }
+
 
     private String generateCode() {
         // 6 случайных цифр, ведущие нули допустимы
