@@ -73,6 +73,8 @@ export default function MyCodeIsPage() {
 
       <div className="flex w-full flex-col items-center">
         <h1 className="text-4xl font-bold text-gray-800">My code is</h1>
+
+        <p className='font-light text-gray-500 mt-2'>Your code is {localStorage.getItem("code")}</p>
         
         <div className="mt-8 flex justify-center gap-2">
           {code.map((digit, index) => (
