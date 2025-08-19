@@ -60,16 +60,55 @@ const PhotoPlaceholder = ({
 export default function AddPhotosPage() {
   const router = useRouter();
   const [photos, setPhotos] = useState<Photo[]>(Array(6).fill({ file: null, url: null }));
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // Ref to the hidden file input
   const fileInputRef = useRef<HTMLInputElement>(null);
   const currentPhotoIndex = useRef<number | null>(null);
 
-  // Cleanup object URLs to prevent memory leaks
+  // Fetch existing photos on page load
+  useEffect(() => {
+    const fetchExistingPhotos = async () => {
+      const userId = localStorage.getItem('userId');
+      if (!userId) {
+        console.error('User ID not found, redirecting to login.');
+        router.push('/');
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:8080/api/profile/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch user profile.');
+        }
+
+        const data = await response.json();
+        // Map fetched URLs to our Photo state structure
+        const fetchedPhotos = data.photos.map((url: string) => ({ url, file: null }));
+        // Pad the array with empty photo slots
+        const initialPhotos = [...fetchedPhotos, ...Array(6 - fetchedPhotos.length).fill({ url: null, file: null })];
+        setPhotos(initialPhotos);
+      } catch (err) {
+        console.error('Error fetching existing photos:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchExistingPhotos();
+  }, [router]);
+
+  // Cleanup temporary object URLs
   useEffect(() => {
     return () => {
       photos.forEach(photo => {
+        // Only revoke URLs that were created locally (i.e., from a new file)
         if (photo.url && photo.file) {
           URL.revokeObjectURL(photo.url);
         }
@@ -95,13 +134,23 @@ export default function AddPhotosPage() {
     fileInputRef.current?.click();
   };
 
-  const handleRemovePhoto = (index: number) => {
+  const handleRemovePhoto = async (index: number) => {
+    const userId = localStorage.getItem('userId');
+    if (!userId) return;
+
+    // Optional: send a DELETE request to the backend to remove the photo
+    const photoUrl = photos[index].url;
+    // In a real app, you would send a DELETE request to your backend here
+    // e.g. await fetch(`http://localhost:8080/api/profile/${userId}/photos/remove`, { method: 'DELETE', body: JSON.stringify({ url: photoUrl }) });
+    
     const newPhotos = [...photos];
     const photoToRemove = newPhotos[index];
     if (photoToRemove.url && photoToRemove.file) {
       URL.revokeObjectURL(photoToRemove.url); // Revoke temporary URL
     }
-    newPhotos[index] = { file: null, url: null };
+    // Shift photos to the left to fill the empty slot
+    newPhotos.splice(index, 1);
+    newPhotos.push({ file: null, url: null });
     setPhotos(newPhotos);
   };
   
@@ -117,6 +166,7 @@ export default function AddPhotosPage() {
 
     try {
       const uploadPromises = photos.map(async (photo) => {
+        // Only upload photos that have a file attached
         if (photo.file) {
           const formData = new FormData();
           formData.append('file', photo.file);
@@ -131,14 +181,25 @@ export default function AddPhotosPage() {
           }
           
           const result = await response.json();
-          return result.photoLink; // Assuming backend returns a link to the uploaded photo
+          // The backend should ideally return the permanent link for this specific photo
+          return { permanentUrl: result.photoLink, temporaryUrl: photo.url };
         }
-        return null;
+        return { permanentUrl: photo.url, temporaryUrl: photo.url }; // Return existing URL
       });
 
-      const uploadedPhotoLinks = await Promise.all(uploadPromises);
+      const uploadedPhotos = await Promise.all(uploadPromises);
 
-      console.log('Photos uploaded successfully:', uploadedPhotoLinks);
+      // Replace temporary URLs with permanent ones
+      const finalPhotos = photos.map(photo => {
+        const uploaded = uploadedPhotos.find(up => up.temporaryUrl === photo.url);
+        return {
+          file: null,
+          url: uploaded?.permanentUrl || photo.url
+        };
+      });
+      setPhotos(finalPhotos);
+
+      console.log('Photos uploaded successfully:', uploadedPhotos);
       router.push('/welcome'); // Redirect to the welcome page
     } catch (error) {
       console.error('Error:', error);
@@ -150,6 +211,14 @@ export default function AddPhotosPage() {
 
   const uploadedPhotosCount = photos.filter(photo => photo.url).length;
   const isButtonDisabled = uploadedPhotosCount < 2 || loading;
+
+  if (loading) {
+    return (
+      <div className="flex h-screen w-screen items-center justify-center bg-white">
+        <p className="text-gray-500">Loading your photos...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="relative flex h-screen w-screen flex-col items-center justify-center bg-white px-8">
