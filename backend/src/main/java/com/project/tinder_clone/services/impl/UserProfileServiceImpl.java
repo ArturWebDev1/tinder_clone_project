@@ -62,7 +62,8 @@ public class UserProfileServiceImpl implements UserProfileService {
      * @return The User object, if found.
      */
     @Override
-    @Cacheable(value = USER_CACHE, key = "#userId")
+//    @Cacheable(value = USER_CACHE, key = "#userId")
+    @Transactional
     public UserProfile getProfileById(Long userId) {
         System.out.println("Fetching user from the database... (this message will only show on a cache miss)");
         return userRepo.findById(userId)
@@ -152,7 +153,6 @@ public class UserProfileServiceImpl implements UserProfileService {
                     return new PhoneCheckResponse(false, null, code);
                 });
     }
-
 
     private String generateCode() {
         // 6 случайных цифр, ведущие нули допустимы

@@ -1,0 +1,16 @@
+<svg preserveAspectRatio="none" version="1.1" viewBox="0 0 23 27" height="27px" width="23px" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+    <title>Path</title>
+    <defs>
+        <linearGradient id="linearGradient-1" y2="79.2229541%" x2="14.7323155%" y1="20.7770459%" x1="77.6323981%">
+            <stop offset="0%" stop-color="#EE805F"></stop>
+            <stop offset="100%" stop-color="#EA4080"></stop>
+        </linearGradient>
+    </defs>
+    <g fill-rule="evenodd" fill="none" stroke-width="1" stroke="none" id="Tinder-App">
+        <g fill-rule="nonzero" fill="url(#linearGradient-1)" id="Navbar">
+            <g id="Home">
+                <path id="Path" d="M22.5677,15.588 C22.5677,21.819 17.5157,26.871 11.2838,26.871 C5.052,26.871 0,21.819 0,15.588 C0,11.532 2.1394,8.503 5.3511,6.514 C5.3511,6.514 5.2348,10.585 6.8634,10.702 C8.492,10.818 13.0288,6.863 11.9818,0 C20.8227,4.536 22.5677,11.941 22.5677,15.588 Z"></path>
+            </g>
+        </g>
+    </g>
+</svg>

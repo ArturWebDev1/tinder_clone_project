@@ -74,12 +74,7 @@ public class UserProfileController {
 
 
     @GetMapping("/{id}")
-    public ProfileWelcomeResponse getWelcomeProfile(@PathVariable Long id) {
-        UserProfile profile = profileService.getProfileById(id);
-        return new ProfileWelcomeResponse(profile.getName(), profile.getAge(),
-                profile.getPhotos().stream()
-                .map(Photo::getUrl)
-                        .toList());
+    public ProfileWelcomeResponse getWelcome(@PathVariable Long id) {
+        return profileMapper.toWelcome(profileService.getProfileById(id));
     }
-
 }
