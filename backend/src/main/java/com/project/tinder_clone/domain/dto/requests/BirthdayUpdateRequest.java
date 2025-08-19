@@ -1,4 +1,4 @@
-package com.project.tinder_clone.domain.dto.responses;
+package com.project.tinder_clone.domain.dto.requests;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;

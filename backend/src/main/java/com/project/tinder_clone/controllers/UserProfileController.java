@@ -1,8 +1,12 @@
 package com.project.tinder_clone.controllers;
 
+import com.project.tinder_clone.domain.dto.requests.BirthdayUpdateRequest;
+import com.project.tinder_clone.domain.dto.requests.GenderUpdateRequest;
+import com.project.tinder_clone.domain.dto.requests.NameUpdateRequest;
 import com.project.tinder_clone.domain.dto.requests.PhoneCheckRequest;
 import com.project.tinder_clone.domain.dto.responses.*;
 import com.project.tinder_clone.domain.dto.ProfileDto;
+import com.project.tinder_clone.domain.entries.Photo;
 import com.project.tinder_clone.domain.entries.UserProfile;
 import com.project.tinder_clone.mapper.ProfileMapper;
 import com.project.tinder_clone.services.UserProfileService;
@@ -30,11 +34,6 @@ public class UserProfileController {
         profileService.deleteProfileById(id);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserProfile> getById(@PathVariable("id") Long id) {
-        UserProfile userProfile = profileService.getProfileById(id);
-        return ResponseEntity.ok(userProfile);
-    }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserProfile> updateProfileById(
@@ -71,6 +70,16 @@ public class UserProfileController {
     @PostMapping("/phone")
     public PhoneCheckResponse getByPhone(@RequestBody @Valid PhoneCheckRequest req) {
         return profileService.findByNumber(req.getPhoneNumber());
+    }
+
+
+    @GetMapping("/{id}")
+    public ProfileWelcomeResponse getWelcomeProfile(@PathVariable Long id) {
+        UserProfile profile = profileService.getProfileById(id);
+        return new ProfileWelcomeResponse(profile.getName(), profile.getAge(),
+                profile.getPhotos().stream()
+                .map(Photo::getUrl)
+                        .toList());
     }
 
 }
