@@ -1,0 +1,10 @@
+<svg preserveAspectRatio="none" version="1.1" viewBox="0 0 28 28" height="28px" width="28px" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+    <title>Path</title>
+    <g fill-rule="evenodd" fill="none" stroke-width="1" stroke="none" id="Tinder-App">
+        <g fill-rule="nonzero" fill="#7D848F" id="Navbar">
+            <g id="Star">
+                <path id="Path" d="M13.604,0 L15.946,5.543 C17.035,8.121 19.086,10.173 21.664,11.262 L27.208,13.603 L21.664,15.945 C19.086,17.034 17.035,19.086 15.946,21.664 L13.604,27.207 L11.262,21.664 C10.173,19.086 8.122,17.034 5.544,15.945 L0,13.603 L5.544,11.262 C8.122,10.173 10.173,8.121 11.262,5.543 L13.604,0 Z"></path>
+            </g>
+        </g>
+    </g>
+</svg>
