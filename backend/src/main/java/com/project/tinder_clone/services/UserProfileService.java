@@ -1,6 +1,7 @@
 package com.project.tinder_clone.services;
 
 import com.project.tinder_clone.domain.dto.responses.PhoneCheckResponse;
+import com.project.tinder_clone.domain.dto.responses.ProfileWelcomeResponse;
 import com.project.tinder_clone.domain.entries.UserProfile;
 
 import java.time.LocalDate;
@@ -22,5 +23,7 @@ public interface UserProfileService {
     UserProfile updateGender(Long id, UserProfile.Gender gender);
 
     PhoneCheckResponse findByNumber(String phoneNumber);
+
+    ProfileWelcomeResponse getWelcomeDtoById(Long userId);
 
 }

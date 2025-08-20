@@ -6,12 +6,12 @@ import com.project.tinder_clone.domain.dto.requests.NameUpdateRequest;
 import com.project.tinder_clone.domain.dto.requests.PhoneCheckRequest;
 import com.project.tinder_clone.domain.dto.responses.*;
 import com.project.tinder_clone.domain.dto.ProfileDto;
-import com.project.tinder_clone.domain.entries.Photo;
 import com.project.tinder_clone.domain.entries.UserProfile;
 import com.project.tinder_clone.mapper.ProfileMapper;
 import com.project.tinder_clone.services.UserProfileService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -75,6 +75,6 @@ public class UserProfileController {
 
     @GetMapping("/{id}")
     public ProfileWelcomeResponse getWelcome(@PathVariable Long id) {
-        return profileMapper.toWelcome(profileService.getProfileById(id));
+        return profileService.getWelcomeDtoById(id);
     }
 }
