@@ -4,6 +4,7 @@ import com.project.tinder_clone.domain.dto.requests.PhoneCheckRequest;
 import com.project.tinder_clone.domain.dto.responses.PhoneCheckResponse;
 import com.project.tinder_clone.domain.dto.responses.ProfileWelcomeResponse;
 import com.project.tinder_clone.domain.entries.UserProfile;
+import com.project.tinder_clone.mapper.ProfileMapper;
 import com.project.tinder_clone.repositories.UserProfileRepository;
 import com.project.tinder_clone.services.UserProfileService;
 import com.project.tinder_clone.utils.PhoneNormalizer;
@@ -29,6 +30,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class UserProfileServiceImpl implements UserProfileService {
     private final UserProfileRepository userRepo;
     private final PhoneNormalizer normalizer;
+    private final ProfileMapper mapper;
 
     public static final String USER_CACHE = "userCache";
 
@@ -154,10 +156,20 @@ public class UserProfileServiceImpl implements UserProfileService {
                 });
     }
 
+    @Override
+    @Transactional
+    @Cacheable(value = USER_CACHE, key = "#userId")
+    public ProfileWelcomeResponse getWelcomeDtoById(Long userId) {
+        var profile = userRepo.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User profile not found with id " + userId));
+        return mapper.toWelcome(profile);
+    }
+
     private String generateCode() {
         // 6 случайных цифр, ведущие нули допустимы
         int n = ThreadLocalRandom.current().nextInt(0, 1_000_000);
         return String.format("%06d", n);
     }
+
 
 }
