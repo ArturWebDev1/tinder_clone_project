@@ -210,7 +210,7 @@ export default function AddPhotosPage() {
   };
 
   const uploadedPhotosCount = photos.filter(photo => photo.url).length;
-  const isButtonDisabled = uploadedPhotosCount < 2 || loading;
+  const isButtonDisabled = uploadedPhotosCount < 1 || loading;  // change in the production
 
   if (loading) {
     return (
@@ -245,7 +245,7 @@ export default function AddPhotosPage() {
         <h1 className="text-4xl font-bold text-gray-800">Add photos</h1>
         
         <p className="mt-4 text-xs text-gray-400 text-center w-80">
-          Add at least 2 photos to continue.
+          Add at least 1 photos to continue.
         </p>
 
         <div className="mt-8 grid grid-cols-3 gap-2 w-80">

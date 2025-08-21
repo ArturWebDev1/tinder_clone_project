@@ -52,7 +52,7 @@ Content-Type: image/jpeg
 --WebAppBoundary--
 
 ### GET requests
-GET http://localhost:8080/api/profile/9
+GET http://localhost:8080/api/profile/42
 
 
 ### UPDATE requests
@@ -71,7 +71,7 @@ Content-Type: application/json
 DELETE http://localhost:8080/api/profile/8
 
 ### GET profile welcome
-GET http://localhost:8080/api/profile/1
+GET http://localhost:8080/api/profile/42
 
 
 
