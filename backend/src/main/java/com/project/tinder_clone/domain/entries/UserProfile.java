@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.locationtech.jts.geom.Point;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -56,11 +57,8 @@ public class UserProfile implements Serializable {
     @Size(max=500)
     private String bio;
 
-//    @Column(nullable=false)
-//    private double longitude = 333.4;  // take this input later from a user
-//
-//    @Column(nullable=false)
-//    private double latitude = 38.3;  // take this input later from a user
+    @Column(columnDefinition = "geography(Point,4326)")
+    private Point location;
 
 
     // A one-to-one relationship with the Preference entity.

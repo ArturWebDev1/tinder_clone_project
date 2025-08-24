@@ -12,8 +12,6 @@ public interface UserProfileService {
 
     void deleteProfileById(Long id);
 
-    UserProfile getProfileById(Long id);
-
     UserProfile updateProfileById(Long id, UserProfile profile);
 
     UserProfile updateName(Long id, String name);

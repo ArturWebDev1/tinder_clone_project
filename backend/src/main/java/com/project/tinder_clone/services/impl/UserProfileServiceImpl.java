@@ -12,6 +12,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -30,7 +31,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class UserProfileServiceImpl implements UserProfileService {
     private final UserProfileRepository userRepo;
     private final PhoneNormalizer normalizer;
-    private final ProfileMapper mapper;
+    private final ProfileMapper profileMapper;
 
     public static final String USER_CACHE = "userCache";
 
@@ -53,25 +54,6 @@ public class UserProfileServiceImpl implements UserProfileService {
         userRepo.deleteById(userId);
     }
 
-    /**
-     * Retrieves a user by their ID.
-     * The @Cacheable annotation tells Spring to check the cache named "userCache" first
-     * before executing the method. The key for the cache entry will be the userId.
-     * If a value is found, it's returned immediately. If not, the method is executed,
-     * and the result is stored in the cache.
-     *
-     * @param userId The ID of the user to retrieve.
-     * @return The User object, if found.
-     */
-    @Override
-//    @Cacheable(value = USER_CACHE, key = "#userId")
-    @Transactional
-    public UserProfile getProfileById(Long userId) {
-        System.out.println("Fetching user from the database... (this message will only show on a cache miss)");
-        return userRepo.findById(userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User profile not found with id " + userId));
-
-    }
 
     /**
      * Updates an existing user.
@@ -160,9 +142,9 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Transactional
     @Cacheable(value = USER_CACHE, key = "#userId")
     public ProfileWelcomeResponse getWelcomeDtoById(Long userId) {
-        var profile = userRepo.findById(userId)
+        UserProfile profile = userRepo.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User profile not found with id " + userId));
-        return mapper.toWelcome(profile);
+        return profileMapper.toWelcome(profile);
     }
 
     private String generateCode() {
