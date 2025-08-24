@@ -26,12 +26,12 @@ public class Preference implements Serializable {
     private Long id;
 
     // A user's preferred age range for matching
-    private int ageRangeMin = 18;
-    private int ageRangeMax = 35;
+    private int ageMin = 18;
+    private int ageMax = 35;
 
     // A user's preferred gender for matching.
     // Consider using an Enum for this in a real application.
-    private String genderPreference;
+    private String preferredGender;
 
     // The 'mappedBy' attribute tells JPA that this side of the relationship is
     // the inverse side, and it should not create a new foreign key column.

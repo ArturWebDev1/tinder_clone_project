@@ -1,24 +1,28 @@
 services:
-  # Our PostgreSQL database
   db:
-    # The Docker image of postgres -- we're using the latest.
-    image: postgres:latest
-    # The ports to expose to the host container
-    # 5432 is the default PostgreSQL port
+    image: postgis/postgis:latest   # ✅ PG 16 + PostGIS 3.4 (стабильно)
+    container_name: tinder-db
+    environment:
+      POSTGRES_DB: tinder
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
-    # If we accidentally kill the running container, Docker Compose
-    # will restart it.
-    restart: always
-    # The PostgreSQL Docker container uses environment variables to
-    # read configuration, here we set the password.
-    # ⚠️ - Do no store plaintext passwords in source control. We
-    #      do so here as this is a builder.
-    environment:
-      POSTGRES_PASSWORD: changemeinprod!
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d tinder"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
 
-  # Your new Redis cache service
   redis:
-    image: redis
+    image: redis:7
+    container_name: tinder-redis
     ports:
       - "6379:6379"
+    restart: unless-stopped
+
+volumes:
+  pgdata:
